@@ -17,5 +17,6 @@
     },
     # only loaded in demonstration mode
     "demo": [
+        "demo/dna_sequencer.xml",
     ],
 }

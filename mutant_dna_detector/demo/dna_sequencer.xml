@@ -1,0 +1,71 @@
+<odoo>
+
+  <record id="dna_3_x_3_no_mutant_sample" model="dna.sequencer">
+    <field name="dna">ACT,TAC,CTA</field>
+  </record>
+  <record id="dna_3_x_3_no_mutant_sample_full_a" model="dna.sequencer">
+    <field name="dna">AAA,AAA,AAA</field>
+  </record>
+
+  <record id="dna_4_x_3_no_mutant_sample" model="dna.sequencer">
+    <field name="dna">ACTG,ACTG,ACTG</field>
+  </record>
+  <record id="dna_4_x_3_mutant_row_sample" model="dna.sequencer">
+    <field name="dna">AAAA,ACTG,ACTG</field>
+  </record>
+  <record id="dna_3_x_4_mutant_column_sample" model="dna.sequencer">
+    <field name="dna">ACT,ACT,AGT,AGG</field>
+  </record>
+
+  <record id="dna_4_x_4_no_mutant_sample" model="dna.sequencer">
+    <field name="dna">ACTG,TGAC,ACTG,TGAC</field>
+  </record>
+  <record id="dna_4_x_4_mutant_row_sample" model="dna.sequencer">
+    <field name="dna">AAAA,TGAC,TGAC,TTTG</field>
+  </record>
+  <record id="dna_4_x_4_mutant_column_sample" model="dna.sequencer">
+    <field name="dna">ACTG,ATGC,ATGC,ACTG</field>
+  </record>
+  <record id="dna_4_x_4_mutant_diagonal_sample" model="dna.sequencer">
+    <field name="dna">ACTG,CAGT,CCAC,TTTA</field>
+  </record>
+
+  <record id="dna_10_x_5_no_mutant_sample" model="dna.sequencer">
+    <field name="dna">ACGGAACTGA,CTAGAGCAAC,TAATTCCATT,GGCAACTTGG,CCCACGGTAA</field>
+  </record>
+  <record id="dna_10_x_5_mutant_row_sample" model="dna.sequencer">
+    <field name="dna">ACAAAACTGA,CTAGAGCAAC,TAATTCCATT,GGCAACTTGG,CCCACGGTAA</field>
+  </record>
+  <record id="dna_10_x_5_mutant_column_sample" model="dna.sequencer">
+    <field name="dna">ACGGAACTGA,CTAGAGCAAC,TAATTCCATT,GGCAACCCGG,CCCACGGTAA</field>
+  </record>
+  <record id="dna_10_x_5_mutant_diagonal_sample" model="dna.sequencer">
+    <field name="dna">ACGGAACTGA,CAAGAGCAAC,TAATTCCATT,GGCAACTTGG,CCCACGGTAA</field>
+  </record>
+
+  <record id="dna_10_x_10_no_mutant_sample" model="dna.sequencer">
+    <field name="dna">ACTGAACTGA,CTAGAGTAAC,TAATCCCATT,GGGAACTTGG,CCCACGGTAA,GTGGTGTAGT,ACCCAATACC,ATGTTCACTT,CCAATCTAGT,AGTCCAATCC</field>
+  </record>
+  <record id="dna_10_x_10_mutant_row_sample" model="dna.sequencer">
+    <field name="dna">ACTGAACTGA,CTAGAGTAAC,TAATCCCATT,GGGAACTTGG,CCCACGGTAA,GTGGTGTAGT,ACCCAATACC,ATGTTCACTT,CCAATCTAGT,AGTAAAATCC</field>
+  </record>
+  <record id="dna_10_x_10_mutant_column_sample" model="dna.sequencer">
+    <field name="dna">ACTGAACTGA,CTAGAGTAAC,TAATCCCATT,GGGAACTTGG,CCCACGGTAA,GTGGTGTAGT,ACCCAATACT,ATGTTCACTT,CCAATCTAGT,AGTCCAATCC</field>
+  </record>
+  <record id="dna_10_x_10_mutant_diagonal_sample" model="dna.sequencer">
+    <field name="dna">ACTGAACTGA,CTAGAGTAAC,TAATCCCATT,GGGAACTTGG,CCCACGGTAA,GTGGTGTAGT,ACCCAATACC,ATGTTCACTT,CCAATCTAGT,AGTCCAATAC</field>
+  </record>
+
+  <record id="dna_6_x_30_no_mutant_sample" model="dna.sequencer">
+    <field name="dna">AATATG,CTGCTC,ACGGTA,CGGGCC,CTATTA,AGTAGT,CCAGGG,TCTCCC,ACTAAC,CTTCCA,GAGGGA,ACCCAC,CACGCA,GTGAGT,AGGAGT,TTCCCA,TTTATA,CGTAGT,GGCGCG,CAGAGG,TCCTTA,ATCTTA,AGGTGT,GTCATG,ACCGGG,TTCGTT,ATATTA,CGCGGC,ATTTAA,CCCGGG</field>
+  </record>
+  <record id="dna_6_x_30_mutant_row_sample" model="dna.sequencer">
+    <field name="dna">AAAATG,CTGCTC,ACGGTA,CGGGCC,CTATTA,AGTAGT,CCAGGG,TCTCCC,ACTAAC,CTTCCA,GAGGGA,ACCCAC,CACGCA,GTGAGT,AGGAGT,TTCCCA,TTTATA,CGTAGT,GGCGCG,CAGAGG,TCCTTA,ATCTTA,AGGTGT,GTCATG,ACCGGG,TTCGTT,ATATTA,CGCGGC,ATTTAA,CCCGGG</field>
+  </record>
+  <record id="dna_6_x_30_mutant_column_sample" model="dna.sequencer">
+    <field name="dna">AATATG,CTGCTC,ACGGTA,CGGGCC,CTATTA,AGTAGT,CCAGGG,TCTCCC,ACTAAC,CTTCCA,GAGGGA,ACCCAC,CACGCA,GTGAGT,AGGAGT,TTCCCA,TTTATA,CGTAGT,GGCGCG,CAGAGG,TCCTTA,ATCTTA,AGGTGT,GTCATG,ACCGGG,TTCGTT,ATATTA,AGCGGC,ATTTAA,ACCGGG</field>
+  </record>
+  <record id="dna_6_x_30_mutant_diagonal_sample" model="dna.sequencer">
+    <field name="dna">AATATG,CTGCTC,ACGGTA,CGGGCC,CTATTA,AGTAGT,CCAGGG,TCTCCC,ACTAAC,CTTCCA,GAGGGA,ACCCAC,CACGCA,GTGAGT,AGGAGT,TTCCCA,TTTATA,CGTAGT,GGCGCG,CAGAGG,TCCTTA,ATCTTA,AGGTGT,GTCATG,ACCGGG,TTCGTT,ATATTA,CGTGGC,ATTTAA,ACCGGG</field>
+  </record>
+</odoo>
