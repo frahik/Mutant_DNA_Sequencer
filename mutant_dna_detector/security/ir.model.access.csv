@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+read_dna_sequencer,read_dna_sequencer,mutant_dna_detector.model_dna_sequencer,,1,0,0,0
+access_dna_sequencer,access_dna_sequencer,mutant_dna_detector.model_dna_sequencer,base.group_user,1,1,1,1
