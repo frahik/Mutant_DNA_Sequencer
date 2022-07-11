@@ -38,3 +38,11 @@ class MutantDnaSequencer(Controller):
             return BadRequest()
         request._cr = None
         return Forbidden()
+
+    @route("/stats/", type="json", auth="none", methods=["GET"], csrf=False)
+    def give_stats(self):
+        """It returns a dictionary with the number of mutant and human DNA sequences, and the ratio between them."""
+        count_mutant_dna = request.env["dna.sequencer"].search_count([("is_mutant", "=", True)])
+        count_human_dna = request.env["dna.sequencer"].search_count([("is_mutant", "=", False)])
+        ratio = count_human_dna and count_mutant_dna / count_human_dna or 0
+        return {"count_mutant_dna": count_mutant_dna, "count_human_dna": count_human_dna, "ratio": ratio}
