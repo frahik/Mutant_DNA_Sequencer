@@ -15,6 +15,7 @@ You need to have the following:
 * [Odoo Community](https://www.odoo.com/documentation/15.0/administration/install/install.html)
 * Python 3.8 or later
 * [Numpy](https://pypi.org/project/numpy/) == `1.23.1`
+* [coverage](https://coverage.readthedocs.io/en/latest/index.html)
 
 ### Run on local
 
@@ -24,12 +25,25 @@ You need to have the following:
 
 * `--addons-path <directories>`: comma-separated list of directories in which modules are stored. These directories are scanned for modules. More information at: [Odoo Cli](https://www.odoo.com/documentation/15.0/developer/cli.html#cmdoption-odoo-bin-addons-path)
 
-
-
 ### Run the tests
 
 ```bash
 ./odoo-bin -i mutant_dna_detector --test-enable --test-tags dna_sequencer --stop-after-init
+```
+
+### Check the coverage
+
+```bash
+coverage run --source=<path_to_module> --omit="*/__init__.py,*/__manifest__.py,*/tests/*,*/controllers/*" <path_to_odoo_directory>/odoo-bin -d odoo --xmlrpc-port=8012 -u mutant_dna_detector --test-enable --log-level=test --stop-after-init
+```
+
+```bash
+coverage report -m
+# Name                                                                             Stmts   Miss  Cover   Missing
+# --------------------------------------------------------------------------------------------------------------
+# <path>/Mutant_DNA_Sequencer/mutant_dna_detector/models/dna_sequencer.py      60      5    92%   37-38, 45-46, 115
+# --------------------------------------------------------------------------------------------------------------
+# TOTAL                                                                               60      5    92
 ```
 
 ## API
