@@ -4,7 +4,6 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.http import Controller, request, route
 from werkzeug.exceptions import Forbidden, BadRequest, UnprocessableEntity
 
-
 class MutantDnaSequencer(Controller):
     @route("/mutant/", type="json", auth="none", methods=["POST"], csrf=False)
     def dna_sequence_mutant_detector(self):
