@@ -79,7 +79,7 @@ class DnaSequencer(models.Model):
         :param dna_string_sequence: The DNA string sequence to be searched
         :return: A boolean value.
         """
-        return bool(re.search(r"(.)\1{3,}", dna_string_sequence))
+        return bool(re.search(r"([ATCG])\1{3}", dna_string_sequence))
 
     def _get_dna_sequence_from_matrix(self, matrix):
         """It takes a matrix of DNA sequences and returns a string of DNA sequences separated by commas

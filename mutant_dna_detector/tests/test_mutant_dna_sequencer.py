@@ -1,7 +1,12 @@
-from odoo.exceptions import ValidationError
+import warnings
+
+from numpy import VisibleDeprecationWarning
+from odoo.exceptions import ValidationError, UserError
 from odoo.tests import TransactionCase, tagged
 from odoo.tools import mute_logger
 from psycopg2 import IntegrityError
+
+warnings.filterwarnings("ignore", category=VisibleDeprecationWarning)
 
 
 @tagged("dna_sequencer")
@@ -96,3 +101,13 @@ class TestDnaSequencer(TransactionCase):
         dna = "ACGGAACTGA,CTAGAGCAAC,TAATTCCATT,GGCAACTTGG,CCCACAAAAA"
         sequencer = self.env["dna.sequencer"].create({"dna": dna})
         self.assertTrue(sequencer.is_mutant)
+
+    def test_08_invalid_sequence(self):
+        dna = "AC,TTT,ACT"
+        with self.assertRaisesRegex(UserError, "DNA provided is corrupt,"):
+            is_mutant = self.env["dna.sequencer"].create({"dna": dna}).is_mutant
+
+    def test_09_no_sequence(self):
+        dna = ",,,"
+        sequencer = self.env["dna.sequencer"].create({"dna": dna})
+        self.assertFalse(sequencer.is_mutant)
