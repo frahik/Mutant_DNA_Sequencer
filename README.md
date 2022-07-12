@@ -59,7 +59,9 @@ Sample Response:
 {
     "jsonrpc": "2.0",
     "id": null,
-    "result": ""
+    "result": {
+        "status": "403 Forbidden: You don't have the permission to access the requested resource. It is either read-protected or not readable by the server."
+    }
 }
 ```
 
@@ -69,10 +71,12 @@ A successful request returns a JSON response body
 
 * **jsonrpc** `string`: The version of the jsonrpc api
 * **id** `int`: Null key.
-* **result**: The Response of the server, the possible values are:
-    + `""` empty string if the DNA provided is from a human
-    + `400 Bad Request: The browser (or proxy) sent a request that this server could not understand.` If the DNA provided doesn't correspond to a DNA possible values (`A`, `C`, `T`, `G`)
-    + `403 Forbidden: You don't have the permission to access the requested resource. It is either read-protected or not readable by the server.` if the DNA provided is from a mutant.
+* **result**:
+    + *status* `string`: The Response of the server, the possible values are:
+        - `200 OK`: If the DNA provided is from a human
+        - `400 Bad Request: The browser (or proxy) sent a request that this server could not understand.`: If the DNA provided doesn't correspond to a DNA possible values (`A`, `C`, `T`, `G`)
+        - `403 Forbidden: You don't have the permission to access the requested resource. It is either read-protected or not readable by the server.`: If the DNA provided is from a mutant.
+        - `422 Unprocessable Entity: The request was well-formed but was unable to be followed due to semantic errors.`: If the length of columns differs and no mutant sequence was found in the rows of the DNA provided.
 
 ### Stats
 
@@ -87,7 +91,7 @@ Use the stats url to check the number of dna queries performed,
 curl -i \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -X GET -d {}
+    -X GET -d {} \
     http://localhost:8069/stats
 ```
 
@@ -117,7 +121,7 @@ A successful request returns a JSON response body
 * **result**:
     + **count_mutant_dna** `int`: The amount of processed DNA that corresponds to mutants
     + **count_human_dna** `int`: The amount of processed DNA that corresponds to humans
-    + **ratio** `float`: The ratio indicates how many times one DNA mutant it's found by one of a DNA human.
+    + **ratio** `float`: The ratio indicates how many times DNA mutant it's found by one of a DNA human.
 
 ## Licenses
 

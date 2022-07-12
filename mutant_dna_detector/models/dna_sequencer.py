@@ -2,7 +2,7 @@ import re
 
 import numpy as np
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class DnaSequencer(models.Model):
@@ -11,7 +11,7 @@ class DnaSequencer(models.Model):
 
     _rec_name = "dna"
     dna = fields.Char(required=True)
-    is_mutant = fields.Boolean(compute="_compute_is_mutant", store=True)
+    is_mutant = fields.Boolean(compute="_compute_is_mutant")
 
     @api.depends("dna")
     def _compute_is_mutant(self):
@@ -24,8 +24,11 @@ class DnaSequencer(models.Model):
                 dna_record.is_mutant = find_mutant_sequence_on_rows
                 continue
             dna_sequence_matrix = dna_record._get_dna_matrix()
-            # Check that sequence has enough length to continue searching for a mutant dna.
-            if dna_sequence_matrix.shape[0] < 4 and dna_sequence_matrix.shape[1] < 4:
+            # Validate the returned matrix
+            if len(dna_sequence_matrix.shape) != 2:
+                raise UserError(_("DNA provided is corrupt, the sequence provided has different column length."))
+            # The rows have already been checked, if the columns are less than 4, it is not necessary to check any more
+            if dna_sequence_matrix.shape[1] < 4:
                 dna_record.is_mutant = False
                 continue
             # Transpose the matrix to now check columns

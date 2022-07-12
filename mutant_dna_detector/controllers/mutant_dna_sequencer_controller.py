@@ -1,8 +1,8 @@
 import json
 
-from odoo.exceptions import ValidationError
-from odoo.http import Controller, Response, request, route
-from werkzeug.exceptions import Forbidden, BadRequest
+from odoo.exceptions import UserError, ValidationError
+from odoo.http import Controller, request, route
+from werkzeug.exceptions import Forbidden, BadRequest, UnprocessableEntity
 
 
 class MutantDnaSequencer(Controller):
@@ -32,12 +32,14 @@ class MutantDnaSequencer(Controller):
         """
         try:
             if dna_sequenced.is_mutant:
-                return ""
+                return {"status": Forbidden()}
         except ValidationError:
-            request._cr = None
-            return BadRequest()
-        request._cr = None
-        return Forbidden()
+            request.env.clear()
+            return {"status": BadRequest()}
+        except UserError:
+            request.env.clear()
+            return {"status": UnprocessableEntity()}
+        return {"status": "200 OK"}
 
     @route("/stats/", type="json", auth="none", methods=["GET"], csrf=False)
     def give_stats(self):
