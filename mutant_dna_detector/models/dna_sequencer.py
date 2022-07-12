@@ -11,40 +11,45 @@ class DnaSequencer(models.Model):
 
     _rec_name = "dna"
     dna = fields.Char(required=True)
-    is_mutant = fields.Boolean(compute="_compute_is_mutant")
+    is_mutant = fields.Boolean(readonly=True)
 
-    @api.depends("dna")
-    def _compute_is_mutant(self):
+    @api.model
+    def create(self, vals):
+        """If the is_mutant field is not present in the vals dictionary, then check the dna sequence and
+        set the is_mutant field to the result of the check.
+
+        :param vals: The values that are being passed to the create method
+        :return: The super().create(vals) is returning the created record.
+        """
+        if "is_mutant" not in vals and vals["dna"]:
+            vals["is_mutant"] = self._check_dna_sequence(vals["dna"])
+        return super().create(vals)
+
+    def _check_dna_sequence(self, dna_sequence):
         """The method that is used to check if a DNA sequence is mutant or not."""
-        for dna_record in self:
-            self._validate_dna_sequence(dna_record.dna)
-            # Check Rows
-            find_mutant_sequence_on_rows = self._find_mutant_sequence(dna_record.dna)
-            if find_mutant_sequence_on_rows:
-                dna_record.is_mutant = find_mutant_sequence_on_rows
-                continue
-            dna_sequence_matrix = dna_record._get_dna_matrix()
-            # Validate the returned matrix
-            if len(dna_sequence_matrix.shape) != 2:
-                raise UserError(_("DNA provided is corrupt, the sequence provided has different column length."))
-            # The rows have already been checked, if the columns are less than 4, it is not necessary to check any more
-            if dna_sequence_matrix.shape[1] < 4:
-                dna_record.is_mutant = False
-                continue
-            # Transpose the matrix to now check columns
-            find_mutant_sequence_on_columns = self._find_mutant_sequence_on_matrix(dna_sequence_matrix.T)
-            if find_mutant_sequence_on_columns:
-                dna_record.is_mutant = find_mutant_sequence_on_columns
-                continue
-
-            # Transform the diagonals to new matrix, as expected return a triangle, will fill the diagonal with
-            # empty values to assure that not will compare less elements than expected.
-            diagonals_matrix = dna_record._get_diagonal_matrix(dna_sequence_matrix)
-            find_mutant_sequence_on_diagonals = self._find_mutant_sequence_on_matrix(diagonals_matrix)
-            if find_mutant_sequence_on_diagonals:
-                dna_record.is_mutant = find_mutant_sequence_on_diagonals
-                continue
-            dna_record.is_mutant = False
+        self._validate_dna_sequence(dna_sequence)
+        # Check Rows
+        find_mutant_sequence_on_rows = self._find_mutant_sequence(dna_sequence)
+        if find_mutant_sequence_on_rows:
+            return True
+        dna_sequence_matrix = self._get_dna_matrix(dna_sequence)
+        # Validate the returned matrix
+        if len(dna_sequence_matrix.shape) != 2:
+            raise UserError(_("DNA provided is corrupt, the sequence provided has different column length."))
+        # The rows have already been checked, if the columns are less than 4, it is not necessary to check any more
+        if dna_sequence_matrix.shape[1] < 4:
+            return False
+        # Transpose the matrix to now check columns
+        find_mutant_sequence_on_columns = self._find_mutant_sequence_on_matrix(dna_sequence_matrix.T)
+        if find_mutant_sequence_on_columns:
+            return True
+        # Transform the diagonals to new matrix, as expected return a triangle, will fill the diagonal with
+        # empty values to assure that not will compare less elements than expected.
+        diagonals_matrix = self._get_diagonal_matrix(dna_sequence_matrix)
+        find_mutant_sequence_on_diagonals = self._find_mutant_sequence_on_matrix(diagonals_matrix)
+        if find_mutant_sequence_on_diagonals:
+            return True
+        return False
 
     def _validate_dna_sequence(self, dna_sequence):
         """It checks if the DNA sequence contains any characters other than A, C, T, G, and commas
@@ -56,12 +61,12 @@ class DnaSequencer(models.Model):
             raise ValidationError(_("DNA provided is corrupt, the sequence contains an incorrect value"))
         return True
 
-    def _get_dna_matrix(self):
+    def _get_dna_matrix(self, dna_sequence):
         """It takes a string of comma separated DNA sequences and returns a numpy array (matrix) of the DNA
         sequences.
         :return: A numpy array of the DNA string split by commas.
         """
-        return np.array([list(row) for row in self.dna.split(",")])
+        return np.array([list(row) for row in dna_sequence.split(",")])
 
     def _find_mutant_sequence_on_matrix(self, matrix):
         """It takes a matrix and returns True if it contains a sequence of four or more of the same letter in a row.

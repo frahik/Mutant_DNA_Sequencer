@@ -5,7 +5,7 @@
         of Strings representing the DNA sequence. """,
     "author": "Francisco Javier Luna Vázquez",
     "category": "Technical",
-    "version": "15.0.1.0.0",
+    "version": "15.0.1.0.1",
     "license": "LGPL-3",
     "depends": ["base"],
     "data": [
