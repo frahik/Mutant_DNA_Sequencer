@@ -51,7 +51,7 @@ class TestDnaSequencer(TransactionCase):
         3.- Transpose the DNA matrix sequence and check that the sequence it's not the same as the Original sequence.
         4.- Check that the sequence corresponds to the transpose dna sequence.
         """
-        matrix = self.dna_10_x_5_no_mutant_sample._get_dna_matrix()
+        matrix = self.env["dna.sequencer"]._get_dna_matrix(self.dna_10_x_5_no_mutant_sample.dna)
 
         dna = self.env["dna.sequencer"]._get_dna_sequence_from_matrix(matrix)
         self.assertEqual(dna, self.dna_10_x_5_no_mutant_sample.dna)
@@ -82,7 +82,7 @@ class TestDnaSequencer(TransactionCase):
                                                             | [A T A A C]
                                                             | [C A C A]
         """
-        matrix = self.dna_10_x_5_no_mutant_sample._get_dna_matrix()
+        matrix = self.env["dna.sequencer"]._get_dna_matrix(self.dna_10_x_5_no_mutant_sample.dna)
         diagonal_matrix = self.env["dna.sequencer"]._get_diagonal_matrix(matrix)
         diagonal_dna_sequence = self.env["dna.sequencer"]._get_dna_sequence_from_matrix(diagonal_matrix)
         self.assertEqual(
@@ -103,11 +103,13 @@ class TestDnaSequencer(TransactionCase):
         self.assertTrue(sequencer.is_mutant)
 
     def test_08_invalid_sequence(self):
+        """It tests that the function raises a UserError when the DNA sequence is invalid."""
         dna = "AC,TTT,ACT"
         with self.assertRaisesRegex(UserError, "DNA provided is corrupt,"):
-            is_mutant = self.env["dna.sequencer"].create({"dna": dna}).is_mutant
+            self.env["dna.sequencer"].create({"dna": dna})
 
     def test_09_no_sequence(self):
+        """It tests that the sequencer returns false when there is not a DNA sequence."""
         dna = ",,,"
         sequencer = self.env["dna.sequencer"].create({"dna": dna})
         self.assertFalse(sequencer.is_mutant)
